@@ -1,17 +1,22 @@
 const express = require('express')
 const app = express()
+const course = require('./models/course');
 
 app.set('view engine', 'pug')
 app.set('views', './views')
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     const param = 'Параметр, много параметров'
-    res.render('index', { param })
+    const courses = await course.find();
+    console.log(courses)
+    res.render('index', { param, courses })
 })
 
-app.get('/course/', (req, res) => {
-    const course = 'Название курса'
-    res.render('course', { course })
+app.get('/course/', async (req, res) => {
+    const test = 'Название курса'
+    const courses = await course.find();
+    console.log(courses)
+    res.render('course', { test, courses })
 })
 
 app.get('/auth/', (req, res) => {
