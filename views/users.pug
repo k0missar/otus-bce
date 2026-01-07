@@ -1,0 +1,21 @@
+html
+    head
+        title Страница со всеми пользователями
+        style.
+            .course-card {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+            }
+            .course-card div {
+                margin: 3px 0;
+            }
+    body
+        h1 Страница со всеми пользователями
+             each user in data
+                 div.course-card
+                     div Название курса: #{user.username}
+                     div Описание: #{user.email}
+                     div Сложность: #{user.role}
