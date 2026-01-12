@@ -13,10 +13,20 @@ html
                 margin: 3px 0;
             }
     body
-        h1 Детальная страница с курсом #{data.title}
-            div.course-card
-                div Название курса: #{data.title}
-                div Описание: #{data.description}
-                div Сложность: #{data.difficulty}
-                div Теги: #{data.tags.join(', ')}
-                div Автор: #{data.author_id.username}
+        header
+            if user
+                div.user-panel
+                    div #{user.username}
+                    a.js-auth(href="#") Выйти
+            else
+                a(href="/auth") Войти | Регистрация
+            h1 Страница с курсом #{data.title}
+
+        div.course-card
+            div Название курса: #{data.title}
+            div Описание: #{data.description}
+            div Сложность: #{data.difficulty}
+            div Теги: #{data.tags.join(', ')}
+            div Автор: #{data.author_id.username}
+
+        script(src="/js/script.js")

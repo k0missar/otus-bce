@@ -13,9 +13,19 @@ html
                 margin: 3px 0;
             }
     body
-        h1 Страница со всеми пользователями
-             each user in data
-                 div.course-card
-                     div Название курса: #{user.username}
-                     div Описание: #{user.email}
-                     div Сложность: #{user.role}
+        header
+            if user
+                div.user-panel
+                    div #{user.username}
+                    a.js-auth(href="#") Выйти
+            else
+                a(href="/auth") Войти | Регистрация
+            h1 Страница со всеми пользователями
+
+        each user in data
+            div.course-card
+                div Имя пользователя: #{user.username}
+                div Email: #{user.email}
+                div Права: #{user.role}
+
+        script(src="/js/script.js")

@@ -3,3 +3,15 @@ html
         title Страница регистрации | авторизации
     body
         h1 Страница регистрации | авторизации
+
+        if user
+            div.user-panel
+                div #{user.username}
+                a.js-auth(href="#") Выйти
+        else
+            form.js-auth-form
+                input(type="email" name="email" required)
+                input(type="password" name="password" required)
+                button(type="submit")   Войти
+
+        script(src="/js/script.js")
