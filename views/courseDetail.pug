@@ -1,6 +1,6 @@
 html
     head
-        title Страница со всеми курсами
+        title Детальная страница с курсом #{data.title}
         style.
             .course-card {
                 border: 1px solid #ccc;
@@ -20,14 +20,13 @@ html
                     a.js-auth(href="#") Выйти
             else
                 a(href="/auth") Войти | Регистрация
-            h1 Страница со всеми курсами
+            h1 Страница с курсом #{data.title}
 
-        each course in data
-            div.course-card
-                div Название курса: #{course.title}
-                div Описание: #{course.description}
-                div Сложность: #{course.difficulty}
-                div Теги: #{course.tags.join(', ')}
-                div Автор: #{course.author_id.username}
+        div.course-card
+            div Название курса: #{data.title}
+            div Описание: #{data.description}
+            div Сложность: #{data.difficulty}
+            div Теги: #{data.tags.join(', ')}
+            div Автор: #{data.author_id.username}
 
         script(src="/js/script.js")

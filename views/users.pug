@@ -1,6 +1,6 @@
 html
     head
-        title Страница со всеми курсами
+        title Страница со всеми пользователями
         style.
             .course-card {
                 border: 1px solid #ccc;
@@ -20,14 +20,12 @@ html
                     a.js-auth(href="#") Выйти
             else
                 a(href="/auth") Войти | Регистрация
-            h1 Страница со всеми курсами
+            h1 Страница со всеми пользователями
 
-        each course in data
+        each user in data
             div.course-card
-                div Название курса: #{course.title}
-                div Описание: #{course.description}
-                div Сложность: #{course.difficulty}
-                div Теги: #{course.tags.join(', ')}
-                div Автор: #{course.author_id.username}
+                div Имя пользователя: #{user.username}
+                div Email: #{user.email}
+                div Права: #{user.role}
 
         script(src="/js/script.js")

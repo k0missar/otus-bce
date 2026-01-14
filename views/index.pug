@@ -1,7 +1,33 @@
 html
     head
         title Страница со всеми курсами
+        style.
+            .course-card {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+            }
+            .course-card div {
+                margin: 3px 0;
+            }
     body
-        h1 Страница со всеми курсами
-        div Каквойто текст на странице со всеми курсами
-        div #{param}
+        header
+            if user
+                div.user-panel
+                    div #{user.username}
+                    a.js-auth(href="#") Выйти
+            else
+                a(href="/auth") Войти | Регистрация
+            h1 Страница со всеми курсами
+
+        each course in data
+            div.course-card
+                div Название курса: #{course.title}
+                div Описание: #{course.description}
+                div Сложность: #{course.difficulty}
+                div Теги: #{course.tags.join(', ')}
+                div Автор: #{course.author_id.username}
+
+        script(src="/js/script.js")
