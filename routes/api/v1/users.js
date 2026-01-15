@@ -7,8 +7,6 @@ const { createUserSchema, updateUserSchema } =
 // GET
 router.get('/', async (req, res) => {
     const userId = req.query.id // если придёт ?id=123
-console.log(req.body)
-console.log(req.query)
     try {
         let data
 
