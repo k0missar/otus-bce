@@ -1,11 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const users = require('../../../models/user')
+const { createUserSchema, updateUserSchema } =
+    require('../../../validators/user.validator')
 
 // GET
 router.get('/', async (req, res) => {
     const userId = req.query.id // если придёт ?id=123
-
+console.log(req.body)
+console.log(req.query)
     try {
         let data
 
@@ -27,30 +30,51 @@ router.get('/', async (req, res) => {
 
 // POST
 router.post('/', async (req, res) => {
-    const { username, email, password } = req.body
+    const { error, value } = createUserSchema.validate(req.body, {
+        abortEarly: false,
+        stripUnknown: true
+    })
 
-    if (!username || !email || !password) {
-        return res.status(400).json({ error: true, message: 'Не переданы все параметры' })
+    if (error) {
+        return res.status(400).json({
+            error: true,
+            messages: error.details.map(e => e.message)
+        })
     }
 
     try {
-        const newUser = await users.create({ username, email, password })
+        const newUser = await users.create(value)
         res.status(201).json({ success: true, data: newUser })
     } catch (error) {
-        console.error(error)
+        if (error.code === 11000) {
+            return res.status(409).json({
+                error: true,
+                message: 'Пользователь с таким email уже существует'
+            })
+        }
+
         res.status(500).json({ error: true, message: 'Ошибка сервера при создании пользователя' })
     }
 })
 
 // PUT
 router.put('/:id', async (req, res) => {
-    const userId = req.params.id
-    const updateData = req.body
+    const { error, value } = updateUserSchema.validate(req.body, {
+        abortEarly: false,
+        stripUnknown: true
+    })
+
+    if (error) {
+        return res.status(400).json({
+            error: true,
+            messages: error.details.map(e => e.message)
+        })
+    }
 
     try {
         const updatedUser = await users.findByIdAndUpdate(
-            userId,
-            updateData,
+            req.params.id,
+            value,
             { new: true, runValidators: true }
         )
 
@@ -60,7 +84,6 @@ router.put('/:id', async (req, res) => {
 
         res.status(200).json({ success: true, data: updatedUser })
     } catch (error) {
-        console.error(error)
         res.status(500).json({ error: true, message: 'Ошибка сервера при обновлении пользователя' })
     }
 })
