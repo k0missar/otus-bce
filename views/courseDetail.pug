@@ -1,17 +1,5 @@
 html
-    head
-        title Детальная страница с курсом #{data.title}
-        style.
-            .course-card {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-bottom: 10px;
-                border-radius: 5px;
-                background-color: #f9f9f9;
-            }
-            .course-card div {
-                margin: 3px 0;
-            }
+    include head
     body
         header
             if user
@@ -29,4 +17,4 @@ html
             div Теги: #{data.tags.join(', ')}
             div Автор: #{data.author_id.username}
 
-        script(src="/js/script.js")
+    include footer

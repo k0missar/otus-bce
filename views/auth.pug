@@ -1,6 +1,5 @@
 html
-    head
-        title Страница регистрации | авторизации
+    include head
     body
         h1 Страница регистрации | авторизации
 
@@ -13,5 +12,4 @@ html
                 input(type="email" name="email" required)
                 input(type="password" name="password" required)
                 button(type="submit")   Войти
-
-        script(src="/js/script.js")
+    include footer

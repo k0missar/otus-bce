@@ -1,17 +1,5 @@
 html
-    head
-        title Страница со всеми пользователями
-        style.
-            .course-card {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-bottom: 10px;
-                border-radius: 5px;
-                background-color: #f9f9f9;
-            }
-            .course-card div {
-                margin: 3px 0;
-            }
+    include head
     body
         header
             if user
@@ -27,5 +15,4 @@ html
                 div Имя пользователя: #{user.username}
                 div Email: #{user.email}
                 div Права: #{user.role}
-
-        script(src="/js/script.js")
+    include footer
