@@ -9,10 +9,17 @@ servers:
 paths:
   /api/v1/users:
     get:
-      summary: Получить список всех пользователей
+      summary: Получить пользователей (можно конкретного по ID через query)
+      parameters:
+          - name: id
+            in: query
+            required: false
+            schema:
+              type: string
+            description: ID пользователя (если не указан — вернёт всех)
       responses:
         '200':
-          description: Успешный ответ
+          description: Пользователь найден / список пользователей
           content:
             application/json:
               schema:
@@ -21,11 +28,33 @@ paths:
                   success:
                     type: boolean
                   data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
+                    oneOf:
+                      - $ref: '#/components/schemas/User'   # один пользователь
+                      - type: array
+                        items:
+                          $ref: '#/components/schemas/User'  # список пользователей
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
         '500':
           description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                  message:
+                    type: string
     post:
       summary: Создать нового пользователя
       requestBody:
@@ -46,25 +75,6 @@ paths:
         '500':
           description: Ошибка сервера
   /api/v1/users/{id}:
-    get:
-      summary: Получить пользователя по ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Пользователь найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: Пользователь не найден
-        '500':
-          description: Ошибка сервера
     put:
       summary: Обновить пользователя по ID
       parameters:

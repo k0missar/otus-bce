@@ -1,17 +1,5 @@
 html
-    head
-        title Страница со всеми курсами
-        style.
-            .course-card {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-bottom: 10px;
-                border-radius: 5px;
-                background-color: #f9f9f9;
-            }
-            .course-card div {
-                margin: 3px 0;
-            }
+    include head
     body
         header
             if user
@@ -29,5 +17,4 @@ html
                 div Сложность: #{course.difficulty}
                 div Теги: #{course.tags.join(', ')}
                 div Автор: #{course.author_id.username}
-
-        script(src="/js/script.js")
+    include footer

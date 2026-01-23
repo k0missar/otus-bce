@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const course = require('../../../models/course')
+const { createCourseSchema, updateCourseSchema } =
+    require('../../../validators/course.validator')
 
 // GET
 router.get('/', async (req, res) => {
@@ -27,31 +29,39 @@ router.get('/', async (req, res) => {
 
 // POST
 router.post('/', async (req, res) => {
-    const { title, description, difficulty, tags, author_id } = req.body
+    const { error, value } = createCourseSchema.validate(req.body)
 
-    if (!title || !description || !difficulty || !tags || !author_id) {
-        return res.status(400).json({ error: true, message: 'Не переданы все параметры' })
+    if (error) {
+        return res.status(400).json({
+            error: true,
+            message: error.details[0].message
+        })
     }
 
     try {
-        const newCourse = await course.create({ title, description, difficulty, tags, author_id })
+        const newCourse = await course.create(value)
         res.status(201).json({ success: true, data: newCourse })
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: true, message: 'Ошибка сервера при создания курса' })
+        res.status(500).json({ error: true, message: 'Ошибка сервера при создании курса' })
     }
 })
 
 // PUT
 router.put('/:id', async (req, res) => {
-    const courseId = req.params.id
-    const updateData = req.body
+    const { error, value } = updateCourseSchema.validate(req.body)
+
+    if (error) {
+        return res.status(400).json({
+            error: true,
+            message: error.details[0].message
+        })
+    }
 
     try {
         const updatedCourse = await course.findByIdAndUpdate(
-            courseId,
-            updateData,
-            { new: true, runValidators: true }
+            req.params.id,
+            value,
+            { new: true }
         )
 
         if (!updatedCourse) {
@@ -60,7 +70,6 @@ router.put('/:id', async (req, res) => {
 
         res.status(200).json({ success: true, data: updatedCourse })
     } catch (error) {
-        console.error(error)
         res.status(500).json({ error: true, message: 'Ошибка сервера при обновлении курса' })
     }
 })
